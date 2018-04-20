@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Yuki Koya"]
   spec.email         = ["buty4649@gmail.com"]
 
-  spec.summary       = %q{CLI tool of add public IP to Securoity Group on OpenStack.}
-  spec.description   = %q{CLI tool of add public IP to Securoity Group on OpenStack.}
+  spec.summary       = %q{CLI tool of add public IP to Security Group on OpenStack.}
+  spec.description   = %q{CLI tool of add public IP to Security Group on OpenStack.}
   spec.homepage      = "https://github.com/buty4649/kanmon/"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
