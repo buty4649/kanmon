@@ -1,5 +1,4 @@
-require "kanmon/version"
+require "kanmon/commands"
 
 module Kanmon
-  # Your code goes here...
 end
