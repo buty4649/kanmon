@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Yuki Koya"]
   spec.email         = ["buty4649@gmail.com"]
 
-  spec.summary       = %q{CLI tool of add public IP to Security Group on OpenStack.}
-  spec.description   = %q{CLI tool of add public IP to Security Group on OpenStack.}
+  spec.summary       = %q{CLI tool of add public IP to Securoity Group on OpenStack.}
+  spec.description   = %q{CLI tool of add public IP to Securoity Group on OpenStack.}
   spec.homepage      = "https://github.com/buty4649/kanmon/"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "yao", ">= 0.3.8"
+  spec.add_dependency "yao", ">= 0.4.1"
   spec.add_dependency "hanami-cli", ">= 0.1.1"
 
   spec.add_development_dependency "bundler", "~> 1.16"

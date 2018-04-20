@@ -3,7 +3,7 @@ PATH
   specs:
     kanmon (0.1.0)
       hanami-cli (>= 0.1.1)
-      yao (>= 0.3.8)
+      yao (>= 0.4.1)
 
 GEM
   remote: https://rubygems.org/
@@ -14,10 +14,10 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.12.2)
       faraday (>= 0.7.4, < 1.0)
-    hanami-cli (0.1.1)
+    hanami-cli (0.2.0)
       concurrent-ruby (~> 1.0)
-      hanami-utils (~> 1.1)
-    hanami-utils (1.1.2)
+      hanami-utils (~> 1.2)
+    hanami-utils (1.2.0)
       concurrent-ruby (~> 1.0)
       transproc (~> 1.0)
     json (2.1.0)
@@ -37,7 +37,7 @@ GEM
       rspec-support (~> 3.7.0)
     rspec-support (3.7.1)
     transproc (1.0.2)
-    yao (0.3.8)
+    yao (0.4.1)
       faraday (~> 0.12.0)
       faraday_middleware
       json

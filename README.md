@@ -27,3 +27,9 @@ $ export OS_PROJECT_DOMAIN_NAME=default
 ```
 $ kanmon open
 ```
+
+追加したSecurity Groupのルールを削除します。
+
+```
+$ kanmon close
+```
