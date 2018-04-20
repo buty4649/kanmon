@@ -20,6 +20,7 @@ build/
 *.bridgesupport
 build-iPhoneOS/
 build-iPhoneSimulator/
+.rspec_status
 
 ## Specific to RubyMotion (use of CocoaPods):
 #
