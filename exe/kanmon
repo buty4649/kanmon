@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
-require "kanmon"
-require "hanami/cli"
+require 'rubygems'
+require 'kanmon'
 
-Hanami::CLI.new(Kanmon::Commands).call
+Kanmon::CLI.start
