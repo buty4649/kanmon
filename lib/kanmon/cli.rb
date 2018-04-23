@@ -25,6 +25,7 @@ module Kanmon
 
     desc "close", "Commands about delete rules from SecurityGroup"
     def close
+      myip = Kanmon::MyIP.get
       tenant_id = Yao.current_tenant_id
 
       rule = {
@@ -35,6 +36,7 @@ module Kanmon
         protocol: "tcp",
         security_group_id: @config["security_group"],
         tenant_id: tenant_id,
+        remote_ip_prefix: "#{myip}/32"
       }
 
       result = Yao::SecurityGroupRule.list(rule)
