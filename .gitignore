@@ -21,6 +21,7 @@ build/
 build-iPhoneOS/
 build-iPhoneSimulator/
 .rspec_status
+/Gemfile.lock
 
 ## Specific to RubyMotion (use of CocoaPods):
 #
