@@ -11,25 +11,25 @@ module Kanmon
     end
 
     def open
-      Yao::SecurityGroupRule.create(rule)
+      result = Yao::SecurityGroupRule.create(rule)
+      puts "Added Rule: #{result.id}"
 
       if block_given?
         begin
           yield
         ensure
-          close
+          delete_rules([result])
         end
       end
     end
 
     def close
       result = Yao::SecurityGroupRule.list(rule)
-      raise "Not found" if result.empty?
 
-      result.each do |rule|
-        id = rule.id
-        puts "Delete #{id}"
-        Yao::SecurityGroupRule.destroy(id)
+      if result.empty?
+        puts "Rule not found"
+      else
+        delete_rules(result)
       end
     end
 
@@ -45,6 +45,14 @@ module Kanmon
         tenant_id: @tenant_id,
         remote_ip_prefix: "#{@ip}/32"
       }
+    end
+
+    def delete_rules(rules)
+      rules.each do |rule|
+        id = rule.id
+        puts "Delete Rule: #{id}"
+        Yao::SecurityGroupRule.destroy(id)
+      end
     end
   end
 end
