@@ -5,7 +5,7 @@ require "kanmon/securitygroup"
 
 module Kanmon
   class CLI < Thor
-    class_option :file, aliases: "f", type: :string, default: "kanmon.yml", banner: "FILE", desc: "Load configure from FILE"
+    class_option :kanmon_config, aliases: "f", type: :string, default: "kanmon.yml", banner: "FILE", desc: "Load configure from FILE"
 
     desc "open", "Commands about add rules to SecurityGroup"
     def open
@@ -41,7 +41,7 @@ module Kanmon
       def invoke_command(command, *args)
         unless %w(help version).include?(command.name)
           Kanmon.init_yao
-          @config = Kanmon.load_config(options[:file])
+          @config = Kanmon.load_config(options[:kanmon_config])
           @sg = SecurityGroup.new(@config["security_group"])
         end
 
