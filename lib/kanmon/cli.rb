@@ -1,4 +1,5 @@
 require "thor"
+require "shellwords"
 
 require "kanmon/myip"
 
@@ -53,6 +54,17 @@ module Kanmon
       end
 
       puts "Success!!"
+    end
+
+    desc "ssh", "Commands about open, run ssh, close"
+    def ssh(*args)
+      invoke CLI, [:open], {}
+
+      begin
+        Process.wait spawn("ssh #{Shellwords.join(args)}")
+      ensure
+        invoke CLI, [:close], {}
+      end
     end
 
     desc "version", "Commands about show version"
