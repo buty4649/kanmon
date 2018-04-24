@@ -12,6 +12,14 @@ module Kanmon
 
     def open
       Yao::SecurityGroupRule.create(rule)
+
+      if block_given?
+        begin
+          yield
+        ensure
+          close
+        end
+      end
     end
 
     def close

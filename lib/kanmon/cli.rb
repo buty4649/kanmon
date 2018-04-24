@@ -21,13 +21,9 @@ module Kanmon
 
     desc "ssh", "Commands about open, run ssh, close"
     def ssh(*args)
-      @sg.open
-
-      begin
+      @sg.open {
         Process.wait spawn("ssh #{Shellwords.join(args)}")
-      ensure
-        @sg.close
-      end
+      }
     end
 
     desc "version", "Commands about show version"
