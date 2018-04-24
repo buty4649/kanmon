@@ -5,7 +5,7 @@ require "kanmon/securitygroup"
 
 module Kanmon
   class CLI < Thor
-    class_option :file, aliases: "f", type: :string, default: "kanmon.yml", banner: "FILE", desc: "Load configure from FILE"
+    class_option :kanmon_config, aliases: "f", type: :string, default: "kanmon.yml", banner: "FILE", desc: "Load configure from FILE"
 
     desc "open", "Commands about add rules to SecurityGroup"
     def open
@@ -19,11 +19,17 @@ module Kanmon
       puts "Success!!"
     end
 
-    desc "ssh", "Commands about open, run ssh, close"
+    desc "ssh HOSTNAME", "Commands about exec ssh"
     def ssh(*args)
-      @sg.open {
-        Process.wait spawn("ssh #{Shellwords.join(args)}")
-      }
+      invoke CLI, [:exec], args.unshift("ssh")
+    end
+
+    desc "exec COMMAND", "Commands about open, exec command, close"
+    def exec(*args)
+      @sg.open do
+        command = Shellwords.join(args)
+        Process.wait spawn(command)
+      end
     end
 
     desc "version", "Commands about show version"
@@ -35,7 +41,7 @@ module Kanmon
       def invoke_command(command, *args)
         unless %w(help version).include?(command.name)
           Kanmon.init_yao
-          @config = Kanmon.load_config(options[:file])
+          @config = Kanmon.load_config(options[:kanmon_config])
           @sg = SecurityGroup.new(@config["security_group"])
         end
 
