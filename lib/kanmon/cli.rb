@@ -19,12 +19,12 @@ module Kanmon
       puts "Success!!"
     end
 
-    desc "ssh", "Commands about exec ssh"
+    desc "ssh HOSTNAME", "Commands about exec ssh"
     def ssh(*args)
       invoke CLI, [:exec], args.unshift("ssh")
     end
 
-    desc "exec", "Commands about open, exec command, close"
+    desc "exec COMMAND", "Commands about open, exec command, close"
     def exec(*args)
       @sg.open do
         command = Shellwords.join(args)
