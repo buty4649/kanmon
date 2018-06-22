@@ -11,6 +11,9 @@ module Kanmon
     def open
       @sg.open
       puts "Success!!"
+    rescue Yao::Conflict => e
+      puts "Is not it already opened?" if e.message.include?("Security group rule already exists.")
+      puts e
     end
 
     desc "close", "Commands about delete rules from SecurityGroup"
