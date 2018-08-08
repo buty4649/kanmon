@@ -34,10 +34,6 @@ module Kanmon
     def close
       @kanmon.close
 
-      if @config.key?('server')
-        @server.close
-      end
-
       puts "Success!!"
     end
 
