@@ -56,9 +56,18 @@ module Kanmon
 
     desc "exec COMMAND", "Commands about open, exec command, close"
     def exec(*args)
-      @sg.open do
-        command = Shellwords.join(args)
-        Process.wait spawn(command)
+      if @config.key?('security_group')
+        @sg.open do
+          command = Shellwords.join(args)
+          Process.wait spawn(command)
+        end
+      end
+
+      if @config.key?('server')
+        @server.open do
+          command = Shellwords.join(args)
+          Process.wait spawn(command)
+        end
       end
     end
 
