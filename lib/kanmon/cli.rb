@@ -23,7 +23,6 @@ module Kanmon
     desc "open", "Commands about add rules to SecurityGroup"
     def open
       @kanmon.open
-
       puts "Success!!"
     rescue Yao::Conflict => e
       puts "Is not it already opened?" if e.message.include?("Security group rule already exists.")
@@ -33,7 +32,6 @@ module Kanmon
     desc "close", "Commands about delete rules from SecurityGroup"
     def close
       @kanmon.close
-
       puts "Success!!"
     end
 
