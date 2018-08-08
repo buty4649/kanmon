@@ -2,6 +2,7 @@ require "thor"
 require "shellwords"
 
 require "kanmon/securitygroup"
+require "kanmon/server"
 
 module Yao::Resources
   class Server < Yao::Resources::Base
@@ -26,23 +27,7 @@ module Kanmon
       end
 
       if @config.key?('server')
-        server = Yao::Server.get(@config['server'])
-        puts "Create security group allow to access server '#{server.name}'."
-        param = {name: "kanmon-server:#{server.id}-user:#{ENV['OS_USERNAME']}", description: "create by kanmon and #{ENV['OS_USERNAME']}"}
-        sg = Yao::SecurityGroup.create(param)
-        rule = {
-            direction: "ingress",
-            port_range_min: 22,
-            port_range_max: 22,
-            ethertype: "IPv4",
-            protocol: "tcp",
-            security_group_id: sg.id,
-            tenant_id: Yao.current_tenant_id,
-            remote_ip_prefix: "#{Kanmon::MyIP.get}/32"
-        }
-        result = Yao::SecurityGroupRule.create(rule)
-        puts "Create rule to #{sg.name} allow ssh from #{Kanmon::MyIP.get}/32: #{result.id}"
-        p Yao::Server.add_security_group(server.id, sg.name)
+        @server.open
       end
 
       puts "Success!!"
@@ -58,14 +43,9 @@ module Kanmon
       end
 
       if @config.key?('server')
-        server = Yao::Server.get(@config['server'])
-        sg_name = "kanmon-server:#{server.id}-user:#{ENV['OS_USERNAME']}"
-        puts "Detach security group #{sg_name} from server '#{server.name}'."
-        Yao::Server.remove_security_group(server.id, sg_name)
-        puts "Delete security group: #{sg_name}"
-        sg = Yao::SecurityGroup.get(sg_name)
-        Yao::SecurityGroup.destroy(sg.id)
+        @server.close
       end
+
       puts "Success!!"
     end
 
@@ -91,8 +71,9 @@ module Kanmon
       def invoke_command(command, *args)
         unless %w(help version).include?(command.name)
           Kanmon.init_yao
-          @config = Kanmon.load_config(options[:kanmon_config])
-          @sg = SecurityGroup.new(@config["security_group"])
+          p @config = Kanmon.load_config(options[:kanmon_config])
+          @sg = SecurityGroup.new(@config["security_group"]) if @config.key?("security_group")
+          @server = Server.new(@config["server"]) if @config.key?("server")
         end
 
         super

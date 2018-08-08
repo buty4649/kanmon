@@ -10,6 +10,10 @@ module Kanmon
       @tenant_id = Yao.current_tenant_id
     end
 
+    def create
+
+    end
+
     def open
       result = Yao::SecurityGroupRule.create(rule)
       puts "Added Rule: #{result.id}"
