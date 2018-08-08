@@ -5,7 +5,6 @@ require "kanmon/myip"
 module Kanmon
   class Server
     def initialize(id, ip = nil)
-      p id
       @id = id
       @ip = ip || Kanmon::MyIP.get
       @tenant_id = Yao.current_tenant_id

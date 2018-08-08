@@ -71,7 +71,7 @@ module Kanmon
       def invoke_command(command, *args)
         unless %w(help version).include?(command.name)
           Kanmon.init_yao
-          p @config = Kanmon.load_config(options[:kanmon_config])
+          @config = Kanmon.load_config(options[:kanmon_config])
           @sg = SecurityGroup.new(@config["security_group"]) if @config.key?("security_group")
           @server = Server.new(@config["server"]) if @config.key?("server")
         end
