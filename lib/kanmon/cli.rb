@@ -22,13 +22,7 @@ module Kanmon
 
     desc "open", "Commands about add rules to SecurityGroup"
     def open
-      if @config.key?('security_group')
-        @sg.open
-      end
-
-      if @config.key?('server')
-        @server.open
-      end
+      @kanmon.open
 
       puts "Success!!"
     rescue Yao::Conflict => e
@@ -38,9 +32,7 @@ module Kanmon
 
     desc "close", "Commands about delete rules from SecurityGroup"
     def close
-      if @config.key?('security_group')
-        @sg.close
-      end
+      @kanmon.close
 
       if @config.key?('server')
         @server.close
@@ -56,18 +48,9 @@ module Kanmon
 
     desc "exec COMMAND", "Commands about open, exec command, close"
     def exec(*args)
-      if @config.key?('security_group')
-        @sg.open do
-          command = Shellwords.join(args)
-          Process.wait spawn(command)
-        end
-      end
-
-      if @config.key?('server')
-        @server.open do
-          command = Shellwords.join(args)
-          Process.wait spawn(command)
-        end
+      @kanmon.open do
+        command = Shellwords.join(args)
+        Process.wait spawn(command)
       end
     end
 
@@ -81,8 +64,12 @@ module Kanmon
         unless %w(help version).include?(command.name)
           Kanmon.init_yao
           @config = Kanmon.load_config(options[:kanmon_config])
-          @sg = SecurityGroup.new(@config["security_group"]) if @config.key?("security_group")
-          @server = Server.new(@config["server"]) if @config.key?("server")
+          if @config.key?("security_group")
+            @kanmon = SecurityGroup.new(@config["security_group"])
+          end
+          if @config.key?('server')
+            @kanmon = Server.new(@config["server"])
+          end
         end
 
         super
