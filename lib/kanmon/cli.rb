@@ -19,6 +19,7 @@ end
 module Kanmon
   class CLI < Thor
     class_option :kanmon_config, aliases: "f", type: :string, default: "kanmon.yml", banner: "FILE", desc: "Load configure from FILE"
+    class_option :target, aliases: "t", type: :string, default: nil, banner: "TARGET", desc: "If more than one Security Group is in the setting, select target"
 
     desc "open", "Commands about add rules to SecurityGroup"
     def open
@@ -58,6 +59,8 @@ module Kanmon
         unless %w(help version).include?(command.name)
           Kanmon.init_yao
           @config = Kanmon.load_config(options[:kanmon_config])
+          @config = @config[options[:target]] if options[:target]
+
           if @config.key?("security_group")
             @kanmon = SecurityGroup.new(@config["security_group"])
           end

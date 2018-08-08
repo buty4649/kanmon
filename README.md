@@ -17,6 +17,16 @@ security_group: 11122233-4444-5555-6666-777788889999
 server: 11122233-4444-5555-6666-777788889999
 ```
 
+もし、kanmon.yaml で複数のターゲットを管理したい場合、次のように書くこともできます。
+
+```yaml
+➤ cat kanmon.yml
+targetA:
+  security_group: 11122233-4444-5555-6666-777788889999
+targetB:
+  security_group: 33344444-5555-6666-7777-888800000000
+```
+
 環境変数を設定します。
 
 ```
@@ -35,8 +45,22 @@ $ export OS_PROJECT_DOMAIN_NAME=default
 $ kanmon open
 ```
 
+kanmon.yaml に複数のターゲットを記述した場合、下記のようにします。
+
+```
+$ kanmon open --target targetA
+$ kanmon open --target targetB
+```
+
 追加したSecurity Groupのルールを削除します。
 
 ```
 $ kanmon close
+```
+
+複数のターゲットがある場合、下記のようになります。
+
+```
+$ kanmon close --target targetA
+$ kanmon close --target targetB
 ```
