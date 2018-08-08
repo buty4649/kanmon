@@ -20,6 +20,7 @@ module Kanmon
     end
 
     def delete_sg
+      puts "Delete security group #{sg_name}"
       Yao::SecurityGroup.destroy(@sg.id)
     end
 
