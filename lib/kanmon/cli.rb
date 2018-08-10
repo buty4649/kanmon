@@ -38,7 +38,7 @@ module Kanmon
 
     desc "ssh HOSTNAME", "Commands about exec ssh"
     def ssh(*args)
-      invoke CLI, [:exec], args.unshift("ssh")
+      invoke :exec, args.unshift("ssh")
     end
 
     desc "exec COMMAND", "Commands about open, exec command, close"
