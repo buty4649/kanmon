@@ -1,6 +1,7 @@
 require "thor"
 require "shellwords"
 
+require "kanmon/version"
 require "kanmon/securitygroup"
 require "kanmon/server"
 
