@@ -4,6 +4,7 @@ require "shellwords"
 require "kanmon/version"
 require "kanmon/securitygroup"
 require "kanmon/server"
+require "kanmon/exclude_ips"
 
 module Yao::Resources
   class Server < Yao::Resources::Base
@@ -67,6 +68,12 @@ module Kanmon
           end
           if @config.key?('server')
             @kanmon = Server.new(@config["server"])
+          end
+
+          exclude_ips = ExcludeIps.new(@config["exclude_ips"])
+          if exclude_ips.include?(@kanmon.ip)
+            puts "MyIP(#{@kanmon.ip}) is included in exclude IPs."
+            exit
           end
         end
 
