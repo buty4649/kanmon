@@ -4,6 +4,8 @@ require "kanmon/myip"
 
 module Kanmon
   class SecurityGroup
+    attr_reader :ip
+
     def initialize(id, ip = nil)
       @id = id
       @ip = ip || Kanmon::MyIP.get
