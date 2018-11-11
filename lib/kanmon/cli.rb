@@ -47,7 +47,10 @@ module Kanmon
     def exec(*args)
       @kanmon.open do
         command = Shellwords.join(args)
-        Process.wait spawn(command)
+        _, status = Process.wait2(spawn(command))
+        if status.to_i != 0
+          raise "Fail to exec command: #{command}"
+        end
       end
     end
 

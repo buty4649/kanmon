@@ -37,12 +37,18 @@ module Kanmon
     end
 
     def open
+      try = 0
       create_sg
       add_sg
 
       if block_given?
         begin
           yield
+        rescue => e
+          try += 1
+          puts "retry #{try} times..."
+          retry if try < 5
+          raise e
         ensure
           remove_sg
           delete_sg
