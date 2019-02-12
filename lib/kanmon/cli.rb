@@ -64,10 +64,10 @@ module Kanmon
           @config = @config[options[:target]] if options[:target]
 
           if @config.key?("security_group")
-            @kanmon = SecurityGroup.new(@config["security_group"])
+            @kanmon = SecurityGroup.new(@config["security_group"], @config["port"])
           end
           if @config.key?('server')
-            @kanmon = Server.new(@config["server"])
+            @kanmon = Server.new(@config["server"], @config["port"])
           end
 
           exclude_ips = ExcludeIps.new(@config["exclude_ips"])
