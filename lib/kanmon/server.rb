@@ -6,8 +6,9 @@ module Kanmon
   class Server
     attr_reader :ip
 
-    def initialize(id, ip = nil)
+    def initialize(id, port, ip = nil)
       @id = id
+      @port = port || 22
       @ip = ip || Kanmon::MyIP.get
       @tenant_id = Yao.current_tenant_id
       @server = Yao::Server.get(id)
@@ -65,8 +66,8 @@ module Kanmon
     def rule
       {
           direction: "ingress",
-          port_range_min: 22,
-          port_range_max: 22,
+          port_range_min: @port,
+          port_range_max: @port,
           ethertype: "IPv4",
           protocol: "tcp",
           security_group_id: @sg.id,
