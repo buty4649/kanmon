@@ -33,17 +33,21 @@ module Kanmon
       Yao::Server.add_security_group(@id, sg_name)
     end
 
+    def validate_sg_already_exists
+      if Yao::SecurityGroup.list({name: sg_name}).size > 0
+        puts "Security Group #{sg_name} already exists."
+        puts "Is not it already opened?"
+        raise Kanmon::AlreadySecurityExistsError
+      end
+    end
+
     def remove_sg
       puts "Remove security group #{sg_name} from server '#{@server.name}'."
       Yao::Server.remove_security_group(@id, sg_name)
     end
 
     def open
-      if Yao::SecurityGroup.list({name: sg_name}).size > 0
-        puts "Security Group #{sg_name} already exists."
-        puts "Is not it already opened?"
-        raise Kanmon::AlreadySecurityExistsError
-      end
+      validate_sg_already_exists
       create_sg
       add_sg
 
