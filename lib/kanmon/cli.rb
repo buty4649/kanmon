@@ -24,9 +24,19 @@ module Kanmon
     end
 
     desc "close", "Commands about delete rules from SecurityGroup"
+    method_option :all, aliases: "a", type: :boolean, default: false, desc: "If set, close all Security Groups(Exclusive witeh --target)"
     def close
-      adapter = load_adapter(config)
-      adapter.close
+      if options[:all] && options[:target].nil?
+        config.targets.each do |name|
+          puts "Checking #{name}"
+          config.set(name)
+          adapter = load_adapter(config)
+          adapter.close
+        end
+      else
+        adapter = load_adapter(config)
+        adapter.close
+      end
       puts "Success!!"
     end
 
@@ -41,14 +51,13 @@ module Kanmon
       adapter = load_adapter(config)
       adapter.open do
         command = Shellwords.join(args)
-        puts command
         Process.wait spawn(command)
       end
     end
 
     desc "list", "Commands about list targets"
     def list
-      puts Config.new(options).keys.sort.join("\n")
+      puts config.targets.sort.join("\n")
     end
 
     desc "version", "Commands about show version"
@@ -58,7 +67,15 @@ module Kanmon
 
     no_commands do
       def config
-        @__config ||= Config.new(options)
+        if @__config.nil?
+          @__config = Config.load_file(options[:config_file])
+        end
+
+        if target = options[:target]
+          @__config.set(target)
+        end
+
+        @__config
       end
 
       def load_adapter(opts)
