@@ -6,18 +6,6 @@ require "kanmon/securitygroup"
 require "kanmon/server"
 require "kanmon/exclude_ips"
 
-module Yao::Resources
-  class Server < Yao::Resources::Base
-    def self.add_security_group(server_id, security_group_name)
-      action(server_id, {"addSecurityGroup": {"name": security_group_name}})
-    end
-
-    def self.remove_security_group(server_id, security_group_name)
-      action(server_id, {"removeSecurityGroup": {"name": security_group_name}})
-    end
-  end
-end
-
 module Kanmon
   class CLI < Thor
     class_option :kanmon_config, aliases: "f", type: :string, default: "kanmon.yml", banner: "FILE", desc: "Load configure from FILE"
