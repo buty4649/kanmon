@@ -50,7 +50,6 @@ module Kanmon
       adapter = load_adapter(config)
       adapter.open do
         command = Shellwords.join(args)
-        puts command
         Process.wait spawn(command)
       end
     end
