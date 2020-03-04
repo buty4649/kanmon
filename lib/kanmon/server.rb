@@ -1,6 +1,7 @@
 require "yao"
 
 require "kanmon/myip"
+require "kanmon/error"
 
 module Kanmon
   class Server
@@ -38,6 +39,11 @@ module Kanmon
     end
 
     def open
+      if Yao::SecurityGroup.list({name: sg_name}).size > 0
+        puts "Security Group #{sg_name} already exists."
+        puts "Is not it already opened?"
+        raise Kanmon::AlreadySecurityExistsError
+      end
       create_sg
       add_sg
 

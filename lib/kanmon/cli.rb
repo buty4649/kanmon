@@ -30,6 +30,7 @@ module Kanmon
     rescue Yao::Conflict => e
       puts "Is not it already opened?" if e.message.include?("Security group rule already exists.")
       puts e
+    rescue Kanmon::AlreadySecurityExistsError
     end
 
     desc "close", "Commands about delete rules from SecurityGroup"
