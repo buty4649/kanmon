@@ -63,10 +63,11 @@ module Kanmon
 
     def close
       begin
-        @sg = Yao::SecurityGroup.get(sg_name)
-        remove_sg
-        delete_sg
-
+        result = Yao::SecurityGroup.find_by_name(sg_name)
+        if @sg = result.first
+          remove_sg
+          delete_sg
+        end
       rescue => e
         p e
       end
