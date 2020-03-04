@@ -28,6 +28,7 @@ module Kanmon
     def close
       if options[:all] && options[:target].nil?
         config.targets.each do |name|
+          puts "Checking #{name}"
           config.set(name)
           adapter = load_adapter(config)
           adapter.close
