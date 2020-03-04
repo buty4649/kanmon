@@ -3,10 +3,14 @@ require "yaml"
 module Kanmon
   class Config
     def initialize(options={})
-      config_file = options[:kanmon_config]
-      target = options[:target]
-      @config = YAML.load_file(config_file)
+      if config_file = options[:config_file]
+        @config = YAML.load_file(config_file)
+      else
+        config_file = default_config_files.find {|path| File.exists?(path)}
+        @config = YAML.load_file(config_file)
+      end
 
+      target = options[:target]
       if target
         @config = @config[target]
       end
@@ -20,6 +24,14 @@ module Kanmon
       define_method(name) do
         @config[name]
       end
+    end
+
+    private
+    def default_config_files
+      [
+        File.expand_path("~/.kanmon.yml"),
+        "./kanmon.yml",
+      ]
     end
   end
 end
