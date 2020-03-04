@@ -14,7 +14,8 @@ module Kanmon
 
     desc "open", "Commands about add rules to SecurityGroup"
     def open
-      @kanmon.open
+      adapter = load_adapter(config)
+      adapter.open
       puts "Success!!"
     rescue Yao::Conflict => e
       puts "Is not it already opened?" if e.message.include?("Security group rule already exists.")
@@ -24,7 +25,8 @@ module Kanmon
 
     desc "close", "Commands about delete rules from SecurityGroup"
     def close
-      @kanmon.close
+      adapter = load_adapter(config)
+      adapter.close
       puts "Success!!"
     end
 
@@ -35,7 +37,8 @@ module Kanmon
 
     desc "exec COMMAND", "Commands about open, exec command, close"
     def exec(*args)
-      @kanmon.open do
+      adapter = load_adapter(config)
+      adapter.open do
         command = Shellwords.join(args)
         Process.wait spawn(command)
       end
@@ -52,26 +55,26 @@ module Kanmon
     end
 
     no_commands do
-      def invoke_command(command, *args)
-        unless %w(list help version).include?(command.name)
-          Kanmon.init_yao
-          config = Config.new(options)
+      def config
+        @__config ||= Config.new(options)
+      end
 
-          if config.security_group
-            @kanmon = SecurityGroup.new(config.security_group, config.port)
-          end
-          if config.server
-            @kanmon = Server.new(config.server, config.port)
-          end
+      def load_adapter(opts)
+        Kanmon.init_yao
 
-          exclude_ips = ExcludeIps.new(config.exclude_ips)
-          if exclude_ips.include?(@kanmon.ip)
-            puts "MyIP(#{@kanmon.ip}) is included in exclude IPs."
-            exit
-          end
+        adapter = if opts.security_group
+                    SecurityGroup.new(opts.security_group, opts.port)
+                  elsif opts.server
+                    Server.new(opts.server, opts.port)
+                  end
+
+        exclude_ips = ExcludeIps.new(opts.exclude_ips)
+        if exclude_ips.include?(adapter.ip)
+          puts "MyIP(#{adapter.ip}) is included in exclude IPs."
+          exit
         end
 
-        super
+        adapter
       end
     end
   end
