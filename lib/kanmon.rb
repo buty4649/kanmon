@@ -21,8 +21,4 @@ module Kanmon
     end
   end
 
-  def self.load_config(file_name)
-    YAML.load_file(file_name)
-  end
-
 end
