@@ -9,7 +9,7 @@ require "kanmon/config"
 
 module Kanmon
   class CLI < Thor
-    class_option :kanmon_config, aliases: "f", type: :string, default: "kanmon.yml", banner: "FILE", desc: "Load configure from FILE"
+    class_option :config_file, aliases: "f", type: :string, default: nil, banner: "FILE", desc: "Specifies an alternate configuration file. (Default: ~/.kanmon.yml or ./kanmon.yml)"
     class_option :target, aliases: "t", type: :string, default: nil, banner: "TARGET", desc: "If more than one Security Group is in the setting, select target"
 
     desc "open", "Commands about add rules to SecurityGroup"
