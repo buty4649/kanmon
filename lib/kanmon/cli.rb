@@ -5,6 +5,7 @@ require "kanmon/version"
 require "kanmon/securitygroup"
 require "kanmon/server"
 require "kanmon/exclude_ips"
+require "kanmon/config"
 
 module Kanmon
   class CLI < Thor
@@ -40,6 +41,11 @@ module Kanmon
       end
     end
 
+    desc "list", "Commands about list targets"
+    def list
+      puts Config.new(options).keys.sort.join("\n")
+    end
+
     desc "version", "Commands about show version"
     def version
       puts Kanmon::VERSION
@@ -47,19 +53,18 @@ module Kanmon
 
     no_commands do
       def invoke_command(command, *args)
-        unless %w(help version).include?(command.name)
+        unless %w(list help version).include?(command.name)
           Kanmon.init_yao
-          @config = Kanmon.load_config(options[:kanmon_config])
-          @config = @config[options[:target]] if options[:target]
+          config = Config.new(options)
 
-          if @config.key?("security_group")
-            @kanmon = SecurityGroup.new(@config["security_group"], @config["port"])
+          if config.security_group
+            @kanmon = SecurityGroup.new(config.security_group, config.port)
           end
-          if @config.key?('server')
-            @kanmon = Server.new(@config["server"], @config["port"])
+          if config.server
+            @kanmon = Server.new(config.server, config.port)
           end
 
-          exclude_ips = ExcludeIps.new(@config["exclude_ips"])
+          exclude_ips = ExcludeIps.new(config.exclude_ips)
           if exclude_ips.include?(@kanmon.ip)
             puts "MyIP(#{@kanmon.ip}) is included in exclude IPs."
             exit
