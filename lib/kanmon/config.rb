@@ -2,37 +2,38 @@ require "yaml"
 
 module Kanmon
   class Config
-    attr_reader :target
+    def self.load_file(filepath)
+      data = if filepath
+               YAML.load_file(filepath)
+             else
+               default_files = [File.expand_path("~/.kanmon.yml"), "./kanmon.yml"]
+               config_file = default_files.find {|path| File.exists?(path)}
+               YAML.load_file(config_file)
+             end
 
-    def initialize(options={})
-      if config_file = options[:config_file]
-        @config = YAML.load_file(config_file)
-      else
-        config_file = default_config_files.find {|path| File.exists?(path)}
-        @config = YAML.load_file(config_file)
-      end
-
-      if @target = options[:target]
-        @config = @config[@target]
-      end
+      new(data)
     end
 
-    def keys
-      @config.keys
+    def initialize(data)
+      @data = data
+    end
+
+    def targets
+      @data.keys
+    end
+
+    def set(target)
+      @target = target
     end
 
     %w(security_group server port exclude_ips).each do |name|
       define_method(name) do
-        @config[name]
+        if @target
+          @data[@target][name]
+        else
+          @data[name]
+        end
       end
-    end
-
-    private
-    def default_config_files
-      [
-        File.expand_path("~/.kanmon.yml"),
-        "./kanmon.yml",
-      ]
     end
   end
 end
