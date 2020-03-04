@@ -2,6 +2,8 @@ require "yaml"
 
 module Kanmon
   class Config
+    attr_reader :target
+
     def initialize(options={})
       if config_file = options[:config_file]
         @config = YAML.load_file(config_file)
@@ -10,9 +12,8 @@ module Kanmon
         @config = YAML.load_file(config_file)
       end
 
-      target = options[:target]
-      if target
-        @config = @config[target]
+      if @target = options[:target]
+        @config = @config[@target]
       end
     end
 
