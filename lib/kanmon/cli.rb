@@ -30,9 +30,10 @@ module Kanmon
       puts "Success!!"
     end
 
-    desc "ssh HOSTNAME", "Commands about exec ssh"
+    desc "ssh [args]", "Commands about exec ssh"
     def ssh(*args)
-      invoke :exec, args.unshift("ssh")
+      ssh_args = args.unshift("ssh", config.target)
+      invoke :exec, ssh_args
     end
 
     desc "exec COMMAND", "Commands about open, exec command, close"
@@ -40,6 +41,7 @@ module Kanmon
       adapter = load_adapter(config)
       adapter.open do
         command = Shellwords.join(args)
+        puts command
         Process.wait spawn(command)
       end
     end
