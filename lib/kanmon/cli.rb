@@ -42,7 +42,7 @@ module Kanmon
 
     desc "ssh [args]", "Commands about exec ssh"
     def ssh(*args)
-      ssh_args = args.unshift("ssh", config.targets)
+      ssh_args = args.unshift("ssh", options[:target])
       invoke :exec, ssh_args
     end
 
