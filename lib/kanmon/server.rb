@@ -6,6 +6,7 @@ require "kanmon/error"
 module Kanmon
   class Server
     attr_reader :ip
+    attr_accessor: :user_name
 
     def initialize(id, port, ip = nil)
       @id = id
@@ -13,6 +14,7 @@ module Kanmon
       @ip = ip || Kanmon::MyIP.get
       @tenant_id = Yao.current_tenant_id
       @server = Yao::Server.get(id)
+      @user_name = ENV['OS_USERNAME']
     end
 
     def create_sg
@@ -88,7 +90,7 @@ module Kanmon
     end
 
     def sg_name
-      "kanmon-server:#{@server.id}-user:#{ENV['OS_USERNAME']}"
+      "kanmon-server:#{@server.id}-user:#{user_name}"
     end
   end
 end
