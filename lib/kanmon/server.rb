@@ -6,7 +6,7 @@ require "kanmon/error"
 module Kanmon
   class Server
     attr_reader :ip
-    attr_accessor: :user_name
+    attr_accessor :user_name
 
     def initialize(id, port, ip = nil)
       @id = id
