@@ -5,4 +5,6 @@ module Kanmon
       super
     end
   end
+
+  class TargetNotFoundError < StandardError; end
 end
