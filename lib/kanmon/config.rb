@@ -23,6 +23,9 @@ module Kanmon
     end
 
     def set(target)
+      unless @data.keys.include?(target)
+        raise TargetNotFoundError.new("#{target} is not found.")
+      end
       @target = target
     end
 
