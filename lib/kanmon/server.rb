@@ -67,7 +67,11 @@ module Kanmon
       begin
         result = Yao::SecurityGroup.find_by_name(sg_name)
         if @sg = result.first
-          remove_sg
+          begin
+            remove_sg
+          rescue Yao::ItemNotFound
+            puts "instance not found"
+          end
           delete_sg
         end
       rescue => e
