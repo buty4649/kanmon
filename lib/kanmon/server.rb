@@ -65,8 +65,9 @@ module Kanmon
 
     def close
       begin
-        result = Yao::SecurityGroup.find_by_name(sg_name)
-        if @sg = result.first
+        results = Yao::SecurityGroup.find_by_name(sg_name)
+        results.each do |result|
+          @sg = result
           begin
             remove_sg
           rescue Yao::ItemNotFound
