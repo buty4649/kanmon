@@ -11,6 +11,7 @@ module Kanmon
       tenant_name          ENV['OS_TENANT_NAME']
       username             ENV['OS_USERNAME']
       password             ENV['OS_PASSWORD']
+      ca_cert              ENV['OS_CACERT']
       client_cert          ENV['OS_CERT']
       client_key           ENV['OS_KEY']
       region_name          ENV['OS_REGION_NAME']
